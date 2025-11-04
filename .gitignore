@@ -1,0 +1,18 @@
+# Node
+node_modules/
+.env
+.env.local
+
+# Python
+venv/
+__pycache__/
+*.pkl
+
+# Expo
+.expo/
+dist/
+build/
+
+# OS
+.DS_Store
+Thumbs.db
