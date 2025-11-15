@@ -1,0 +1,42 @@
+# Render manifest for ai-stock-app
+# Creates a managed Postgres and two services (web + worker) that will
+# receive DATABASE_URL from the managed DB.
+
+databases:
+  - name: ai-stock-db
+    plan: free
+    databaseName: aistock
+    # region: oregon # optional: set your preferred region
+
+services:
+  - type: web
+    name: ai-stock-backend-web
+    env: node
+    plan: free
+    branch: main
+    dir: backend
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ai-stock-db
+          property: connectionString
+
+  - type: worker
+    name: ai-stock-backend-worker
+    env: node
+    plan: free
+    branch: main
+    dir: backend
+    buildCommand: "npm install"
+    startCommand: "npm run worker"
+    envVars:
+      - key: RUN_WORKER
+        value: "true"
+      - key: DATABASE_URL
+        fromDatabase:
+          name: ai-stock-db
+          property: connectionString

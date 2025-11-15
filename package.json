@@ -1,0 +1,13 @@
+{
+  "name": "ai-stock-app",
+  "private": true,
+  "version": "1.0.0",
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "start": "echo \"This is the monorepo root. Start services inside their folders.\"",
+    "build": "echo \"No root build. See backend and frontend projects.\""
+  }
+}

@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: devuser
+      POSTGRES_PASSWORD: devpass
+      POSTGRES_DB: aistock
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
+
+  backend-web:
+    build:
+      context: ./backend
+    command: npm start
+    environment:
+      DATABASE_URL: postgres://devuser:devpass@postgres:5432/aistock
+      ALPACA_PAPER: 'true'
+      ADMIN_API_KEY: 'dev-admin'
+      PORT: 4000
+    ports:
+      - '4000:4000'
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app
+
+  backend-worker:
+    build:
+      context: ./backend
+    command: npm run worker
+    environment:
+      DATABASE_URL: postgres://devuser:devpass@postgres:5432/aistock
+      ALPACA_PAPER: 'true'
+      ADMIN_API_KEY: 'dev-admin'
+      RUN_WORKER: 'true'
+      WORKER_PORT: 4001
+    ports:
+      - '4001:4001'
+    depends_on:
+      - postgres
+    volumes:
+      - ./backend:/app
+
+volumes:
+  pgdata:
+*** End File

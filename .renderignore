@@ -1,0 +1,8 @@
+# Ignore ML/python artifacts so Render doesn't auto-detect a Python app
+ml/
+ml/**
+mobile/
+frontend/
+__pycache__/
+*.pyc
+requirements.txt
